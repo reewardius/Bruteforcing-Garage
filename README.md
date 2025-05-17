@@ -52,6 +52,17 @@ The tool has the following options:
 ```
 rm -rf finder/ && mkdir finder/ && python3 finder-js.py -l js.txt -o endpoints.txt && cat endpoints.txt | grep -Ei 'api|v1|v2|v3|user|admin|internal|debug|data|account|config' > finder/juicyinfo.txt && cat endpoints.txt | grep -E 'http://|https://' > finder/http_links.txt && cat endpoints.txt | grep -E 'create|add|security|reset| update|delete|modify|remove|list|offer|show|trace|allow|disallow|approve|reject|start|stop|set' > finder/interested_api_endpoints.txt
 ```
+Delete Duplicates AND Modify Input Files
+```
+for f in finder/http_links.txt finder/interested_api_endpoints.txt finder/juicyinfo.txt; do sort -u "$f" -o "$f"; done
+sed 's|^/||' finder/juicyinfo.txt
+sed 's|^/||' finder/interested_api_endpoints.txt
+ffuf -u URL/TOP -w alive_http_services.txt:URL -w juicyinfo.txt:TOP -ac -mc 200 -o fuzz_results.json -fs 0
+python3 delete_falsepositives.py -j fuzz_results.json -o fuzz_output1.txt -fp fp_domains1.txt
+#################
+ffuf -u URL/TOP -w alive_http_services.txt:URL -w interested_api_endpoints.txt:TOP -ac -mc 200 -o fuzz_results.json -fs 0
+python3 delete_falsepositives.py -j fuzz_results.json -o fuzz_output2.txt -fp fp_domains2.txt
+```
 
 This will extract endpoints from all the URLs in the specified file and save them to the file `js_endpoints.txt`.
 
