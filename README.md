@@ -48,6 +48,11 @@ The tool has the following options:
 * `-p`: Public mode for showing the URLs of each endpoint & showing the function (endpoints/fetch).
 * `-t`: The number of threads to use for concurrent processing.
 
+## My Approach
+```
+rm -rf finder/ && mkdir finder/ && python3 finder-js.py -l js.txt -o endpoints.txt && cat endpoints.txt | grep -Ei 'api|v1|v2|v3|user|admin|internal|debug|data|account|config' > finder/juicyinfo.txt && cat endpoints.txt | grep -E 'http://|https://' > finder/http_links.txt && cat endpoints.txt | grep -E 'create|add|security|reset| update|delete|modify|remove|list|offer|show|trace|allow|disallow|approve|reject|start|stop|set' > finder/interested_api_endpoints.txt
+```
+
 This will extract endpoints from all the URLs in the specified file and save them to the file `js_endpoints.txt`.
 
 ## How it works
