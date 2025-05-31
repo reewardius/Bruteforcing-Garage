@@ -246,8 +246,7 @@ run_fuzzing() {
          -w "${ALIVE_SERVICES}:URL" \
          -w "${wordlist}:FUZZ" \
          -ac \
-         -mc 200,201,202,204,301,302,307,308,403,405,500 \
-         -fc 404 \
+         -mc 200 \
          -o "${RESULTS_DIR}/${output_name}.json" \
          -fs 0 \
          -t "$THREADS" \
