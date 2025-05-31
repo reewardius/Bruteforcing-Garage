@@ -66,6 +66,8 @@ python3 delete_falsepositives.py -j fuzz_results.json -o fuzz_output2.txt -fp fp
 
 This will extract endpoints from all the URLs in the specified file and save them to the file `js_endpoints.txt`.
 
-## How it works
-
-The tool works by first downloading the specified JavaScript file. It then parses the file and extracts all the URLs that are found in the file. Finally, it saves the extracted URLs to
+#### Get Only Params
+```
+python3 params-extractor.py -l js.txt --only-params
+```
+Finally, params save to `params.txt` file (by default)
