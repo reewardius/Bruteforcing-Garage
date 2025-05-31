@@ -73,14 +73,18 @@ python3 delete_falsepositives.py -j fuzz_results.json -o fuzz_output2.txt -fp fp
 This will extract endpoints from all the URLs in the specified file and save them to the file `js_endpoints.txt`.
 
 #### Get Only Params
-```
+```bash
 python3 params-extractor.py -l js.txt --only-params
 ```
 Finally, params save to `params.txt` file (by default)
 
 #### AutoFinder (js-finder.py)
+```bash
+subfinder -d target.com -all -silent -o subs.txt && \
+httpx -l subs.txt -mc 200 -o alive.txt && \
+getJS -input alive.txt -complete -output js.txt && \
+bash autofinder.sh -j js.txt -s alive.txt -t 100 -r 200
 ```
-subfinder -d target.com -all -silent -o subs.txt && httpx -l subs.txt -mc 200 -o alive.txt && getJS -input alive.txt -complete -output js.txt
-bash autofinder.sh -j js.txt -s alive.txt
-```
+![image](https://github.com/user-attachments/assets/275ec435-ddcc-4d62-bd61-74203e387661)
+
 
