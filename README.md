@@ -1,4 +1,10 @@
- # Finder-JS
+# Advanced Bruteforcing
+
+1. Ffuf -> https://github.com/reewardius/bbFuzzing.txt
+2. FinderJS -> https://github.com/reewardius/Finder-JS
+3. Swagger-Checker -> https://github.com/reewardius/swagger-checker
+
+#### FinderJS
 
 This tool extracts endpoints from JavaScript files. It can be used in two modes: single URL mode and URLs list mode.
 
