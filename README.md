@@ -77,3 +77,10 @@ This will extract endpoints from all the URLs in the specified file and save the
 python3 params-extractor.py -l js.txt --only-params
 ```
 Finally, params save to `params.txt` file (by default)
+
+#### AutoFinder (js-finder.py)
+```
+subfinder -d target.com -all -silent -o subs.txt && httpx -l subs.txt -mc 200 -o alive.txt && getJS -input alive.txt -complete -output js.txt
+bash autofinder.sh -j js.txt -s alive.txt
+```
+
