@@ -8,7 +8,7 @@ YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
-rm -f general* nuclei* fuzz* fp* http* juicy* interested* js.txt subs.txt alive* root.txt
+rm -f general* nuclei* fuzz* fp* http* juicy* interested* endpoints.txt js.txt subs.txt alive* root.txt
 
 # Function to show help
 show_help() {
@@ -149,7 +149,7 @@ run_recon() {
     # Step 5: Fuzzing with interested_api_endpoints
     if [ -s alive_http_services.txt ] && [ -s interested_api_endpoints.txt ]; then
         log "Step 5: Fuzzing with interested API endpoints..."
-        ffuf -u URL/TOP -w alive_http_services.txt:URL -w interested_api_endpoints.txt:TOP -ac -mc 200 -r -o fuzz_results.json -fs 0
+        ffuf -u URL/TOP -w alive_http_services.txt:URL -w interested_api_endpoints.txt:TOP -ac -mc 200 -t 500 -r -o fuzz_results.json -fs 0
         
         if [ $? -eq 0 ] && [ -s fuzz_results.json ]; then
             python3 delete_falsepositives.py -j fuzz_results.json -o fuzz_output1.txt -fp fp_domains1.txt
@@ -166,7 +166,7 @@ run_recon() {
     # Step 6: Fuzzing with juicyinfo
     if [ -s alive_http_services.txt ] && [ -s juicyinfo.txt ]; then
         log "Step 5b: Fuzzing with juicy endpoints..."
-        ffuf -u URL/TOP -w alive_http_services.txt:URL -w juicyinfo.txt:TOP -ac -mc 200 -r -o fuzz_results.json -fs 0
+        ffuf -u URL/TOP -w alive_http_services.txt:URL -w juicyinfo.txt:TOP -ac -mc 200 -t 500 -r -o fuzz_results.json -fs 0
         
         if [ $? -eq 0 ] && [ -s fuzz_results.json ]; then
             python3 delete_falsepositives.py -j fuzz_results.json -o fuzz_output2.txt -fp fp_domains2.txt
