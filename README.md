@@ -1,4 +1,4 @@
-### Bruteforcing Advanced Bruteforcing
+### Advanced Fuzzing
 
 1. Ffuf -> https://github.com/reewardius/bbFuzzing.txt
 2. FinderJS -> https://github.com/reewardius/Finder-JS
