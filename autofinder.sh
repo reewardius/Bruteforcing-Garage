@@ -8,6 +8,8 @@ YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
+rm -f general* nuclei* fuzz* fp* http* juicy* interested* js.txt subs.txt alive* root.txt
+
 # Function to show help
 show_help() {
     echo -e "${BLUE}Usage:${NC}"
@@ -111,7 +113,7 @@ run_recon() {
     
     # Step 3: Extract JS files
     log "Step 3: Extracting JS files with getJS..."
-    getJS -input alive_http_services.txt -t 50 -complete -output js.txt
+    getJS -input alive_http_services.txt -threads 50 -complete -output js.txt
     
     if [ $? -ne 0 ] || [ ! -s js.txt ]; then
         warning "Failed to extract JS files or js.txt is empty"
