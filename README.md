@@ -1,7 +1,7 @@
 ### Advanced Fuzzing
 
-1. Ffuf -> https://github.com/reewardius/bbFuzzing.txt
-2. FinderJS -> https://github.com/reewardius/Finder-JS
+1. Ffuf (wordlist) -> https://github.com/reewardius/bbFuzzing.txt
+2. JS-Finder -> https://github.com/reewardius/js-finder
 3. Swagger-Checker -> https://github.com/reewardius/swagger-checker
 
 #### AutoFinder
