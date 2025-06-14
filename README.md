@@ -4,73 +4,38 @@
 2. FinderJS -> https://github.com/reewardius/Finder-JS
 3. Swagger-Checker -> https://github.com/reewardius/swagger-checker
 
-#### FinderJS
-
-This tool extracts endpoints from JavaScript files. It can be used in two modes: single URL mode and URLs list mode.
-
-## Installation
-
-To install the tool, simply clone the repository:
-
+#### AutoFinder
 ```bash
-git clone https://github.com/ThatNotEasy/Finder-JS.git
+[root@ip-10-0-0-147 Bruteforcing-Garage]# bash autofinder.sh -h
+Usage:
+  autofinder.sh -d <domain>          # For single domain
+  autofinder.sh -f <file>            # For multiple domains from file
+
+Examples:
+  autofinder.sh -d target.com
+  autofinder.sh -f domains.txt
+
+Description:
+  Script performs complete subdomain reconnaissance including:
+  - Subdomain discovery (subfinder)
+  - Live service check (httpx)
+  - JS file extraction (getJS)
+  - Endpoint discovery (finder-js.py)
+  - Fuzzing (ffuf)
+  - Vulnerability scanning (nuclei)
 ```
+![image](https://github.com/user-attachments/assets/ce369a41-904e-4db6-a15d-246785f5b8d8)
 
-## Usage
-
-### Single URL Mode
-
-To use the tool in single URL mode, run the following command:
-
+#### Swagger-Checker
 ```bash
-python3 finder-js.py -u https://example.com/script.js
+git clone https://github.com/reewardius/swagger-checker && cd swagger-checker && \
+subfinder -d target.com -all -silent -o subs.txt && \
+naabu -l subs.txt -s s -tp 100 -ec -c 50 -o naabu.txt && \
+httpx -l naabu.txt -rl 500 -t 200 -o alive_http_services.txt && \
+python3 generate.py -i alive_http_services.txt -o alive_http_services_advanced.txt && \
+nuclei -l alive_http_services_advanced.txt -id openapi,swagger-api -o swagger_endpoints.txt -rl 1000 -c 100 && \
+python3 swagger_checker_threads.py -t 100
 ```
-
-This will extract endpoints from the specified URL and save them to the file `js_endpoints.txt`.
-
-### URLs List Mode
-
-To use the tool in URLs list mode, run the following command:
-
-```bash
-python3 finder-js.py -l urls.txt
-```
-
-This will extract endpoints from all the URLs in the specified file and save them to the file `js_endpoints.txt`.
-
-The `urls.txt` file should contain a list of URLs, one per line.
-
-### Output
-
-The output of the tool is a text file containing a list of endpoints. Each endpoint is on a new line.
-
-## Options
-
-The tool has the following options:
-
-* `-u`: The URL to extract endpoints from.
-* `-l`: The file containing a list of URLs to extract endpoints from.
-* `-o`: The output file to save the endpoints to.
-* `-p`: Public mode for showing the URLs of each endpoint & showing the function (endpoints/fetch).
-* `-t`: The number of threads to use for concurrent processing.
-
-## My Approach
-```
-rm -rf finder/ && mkdir finder/ && python3 finder-js.py -l js.txt -o endpoints.txt && cat endpoints.txt | grep -Ei 'api|v1|v2|v3|user|admin|internal|debug|data|account|config' > finder/juicyinfo.txt && cat endpoints.txt | grep -E 'http://|https://' > finder/http_links.txt && cat endpoints.txt | grep -E 'create|add|security|reset| update|delete|modify|remove|list|offer|show|trace|allow|disallow|approve|reject|start|stop|set' > finder/interested_api_endpoints.txt
-```
-Delete Duplicates AND Modify Input Files
-```
-for f in finder/http_links.txt finder/interested_api_endpoints.txt finder/juicyinfo.txt; do sort -u "$f" -o "$f"; done
-sed 's|^/||' finder/juicyinfo.txt
-sed 's|^/||' finder/interested_api_endpoints.txt
-ffuf -u URL/TOP -w alive_http_services.txt:URL -w juicyinfo.txt:TOP -ac -mc 200 -o fuzz_results.json -fs 0
-python3 delete_falsepositives.py -j fuzz_results.json -o fuzz_output1.txt -fp fp_domains1.txt
-#################
-ffuf -u URL/TOP -w alive_http_services.txt:URL -w interested_api_endpoints.txt:TOP -ac -mc 200 -o fuzz_results.json -fs 0
-python3 delete_falsepositives.py -j fuzz_results.json -o fuzz_output2.txt -fp fp_domains2.txt
-```
-
-This will extract endpoints from all the URLs in the specified file and save them to the file `js_endpoints.txt`.
 
 #### Get Only Params
 ```bash
@@ -78,13 +43,5 @@ python3 params-extractor.py -l js.txt --only-params
 ```
 Finally, params save to `params.txt` file (by default)
 
-#### AutoFinder (js-finder.py)
-```bash
-subfinder -d target.com -all -silent -o subs.txt && \
-httpx -l subs.txt -mc 200 -o alive.txt && \
-getJS -input alive.txt -complete -output js.txt && \
-bash autofinder.sh -j js.txt -s alive.txt -t 100 -r 200
-```
-![image](https://github.com/user-attachments/assets/275ec435-ddcc-4d62-bd61-74203e387661)
 
 
